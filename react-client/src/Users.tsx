@@ -1,13 +1,10 @@
 import { observer } from 'mobx-react';
 import React, { useEffect } from 'react';
 
-import { useStores } from './App';
+import { useUserStore } from './CustomHooks';
 
 export const User = observer(() => {
-    const { userStore } = useStores();
-    useEffect(() => {
-        userStore.fetch();
-    }, []);
+    const userStore = useUserStore();
     return (
         <>
             <label>
