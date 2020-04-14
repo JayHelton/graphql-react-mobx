@@ -1,17 +1,7 @@
-import { gql } from 'apollo-boost';
 import { observer } from 'mobx-react';
-import React, { Component, Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useStores } from './App';
-
-const USERS_QUERY = gql`
-	query Users {
-		user {
-			email
-			name
-		}
-	}
-`;
 
 export const User = observer(() => {
 	const { userStore } = useStores();
@@ -20,7 +10,7 @@ export const User = observer(() => {
 	}, []);
 
 	return (
-		<Fragment>
+		<>
 			<label>
 				Email:
 				<input
@@ -37,6 +27,6 @@ export const User = observer(() => {
 					{u.email} - {u.name}
 				</p>
 			))}
-		</Fragment>
+		</>
 	);
 });
