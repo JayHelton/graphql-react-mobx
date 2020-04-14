@@ -8,7 +8,6 @@ export const User = observer(() => {
 	useEffect(() => {
 		userStore.fetch();
 	}, []);
-
 	return (
 		<>
 			<label>
