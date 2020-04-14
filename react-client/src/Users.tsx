@@ -17,7 +17,9 @@ export const User = observer(() => {
 					name="email"
 					value={userStore.searchCriteria?.email}
 					onChange={(e) =>
-						userStore.addSearchCriteria({ [e.target.name]: e.target.value })
+						userStore.addSearchCriteria({
+							[e.target.name]: e.target.value,
+						})
 					}
 				/>
 			</label>
