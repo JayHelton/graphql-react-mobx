@@ -83,6 +83,7 @@ const resolvers = {
     Query: {
         hello: (_, args) => `Hello ${args.name || 'World'}!`,
         user: (_, { email }) => {
+            console.log(users);
             if (email) {
                 return users.find((u) => u.email === email);
             }
@@ -94,6 +95,7 @@ const resolvers = {
     },
     Mutation: {
         createUser(_, { email, name }) {
+            console.log('user created');
             const id = Math.random();
             users.push({ id, email, name });
             return { id, email, name };

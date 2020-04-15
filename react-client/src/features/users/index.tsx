@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
+import { AddUserComponent } from './AddUser';
 import { useUserFeature } from './Hooks';
 import { UserPageComponent } from './UserPage';
 
@@ -10,6 +11,7 @@ function UserFeature() {
     return (
         <>
             <UserPageComponent store={store} />
+            <AddUserComponent store={store} />
         </>
     );
 }

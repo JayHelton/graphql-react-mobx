@@ -6,6 +6,7 @@ import { UserStore } from './Store';
 function UserPage({ store }: { store: UserStore }): JSX.Element {
     return (
         <>
+            <button onClick={() => store.fetch()}>Fetch</button>
             <h1>Users</h1>
             <div>
                 <ul>

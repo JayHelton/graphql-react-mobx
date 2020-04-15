@@ -12,6 +12,15 @@ const query = gql`
         }
     }
 `;
+const createMutation = gql`
+    mutation CreateUser($email: String!, $name: String!) {
+        createUser(email: $email, name: $name) {
+            id
+            email
+            name
+        }
+    }
+`;
 
 export class UserStore {
     @observable
@@ -40,7 +49,18 @@ export class UserStore {
 
     @action
     async fetch() {
-        const { data } = await client.query({ query });
+        const { data, errors } = await client.query({ query });
+        console.log(data, errors);
         this.setUsers(data.user);
+    }
+
+    @action
+    async createUser(data: any) {
+        const res = await client.mutate({
+            refetchQueries: [{ query }],
+            mutation: createMutation,
+            variables: { ...data },
+        });
+        console.log(res);
     }
 }
