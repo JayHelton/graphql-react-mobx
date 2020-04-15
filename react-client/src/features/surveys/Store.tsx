@@ -1,7 +1,7 @@
 import { gql } from 'apollo-boost';
 import { action, computed, observable } from 'mobx';
 
-import { client } from '../../App';
+import { client } from '../../Context';
 
 const query = gql`
     query SurveyQuery {
