@@ -6,7 +6,7 @@ export function useUserFeature() {
     const { userStore } = useStores();
     useEffect(() => {
         userStore.fetch();
-        console.log('fetching');
+        console.log('fetching users');
     }, []);
     return { store: userStore };
 }

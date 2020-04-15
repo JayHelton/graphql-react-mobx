@@ -6,7 +6,7 @@ export function useSurveyFeature() {
     const { surveyStore } = useStores();
     useEffect(() => {
         surveyStore.fetch();
-        console.log('fetching');
+        console.log('fetching survey');
     }, []);
     return { store: surveyStore };
 }

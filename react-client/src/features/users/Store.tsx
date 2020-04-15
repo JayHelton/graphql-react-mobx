@@ -21,13 +21,13 @@ const createMutation = gql`
         }
     }
 `;
-
 export class UserStore {
+    observableQuery: any;
+    subscription: any;
     @observable
     users: { name: string; email: string }[] = [];
     @observable
     searchedText = '';
-
     @computed
     get searchedUsers() {
         return this.users.filter(
@@ -36,24 +36,26 @@ export class UserStore {
                 u.email.includes(this.searchedText)
         );
     }
-
     @action
     setUsers(users: any) {
         this.users = users;
     }
-
     @action
     setSearchedText(searchedText: any) {
         this.searchedText = searchedText;
     }
-
     @action
     async fetch() {
-        const { data, errors } = await client.query({ query });
-        console.log(data, errors);
-        this.setUsers(data.user);
+        // Fetch the data, and subscribe to any updates that the client wants to make
+        // Currently, only the createUser method will trigger the next item in the stream
+        this.observableQuery = client.watchQuery({ query });
+        this.subscription = this.observableQuery.subscribe({
+            next: ({ data }: any) => {
+                console.log('updating store');
+                this.setUsers(data.user);
+            },
+        });
     }
-
     @action
     async createUser(data: any) {
         const res = await client.mutate({
