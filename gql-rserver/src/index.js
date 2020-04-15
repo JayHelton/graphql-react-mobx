@@ -1,45 +1,103 @@
 const { GraphQLServer } = require('graphql-yoga');
 
 const users = [{ email: 'test@test.com', name: 'Test Testerson' }];
+const surveys = [
+    {
+        name: 'My First Survey',
+        id: 1,
+        sections: [
+            {
+                name: 'Section One',
+                id: 1,
+                questions: [
+                    { question: 'What do you identify as?', type: 'text' },
+                ],
+            },
+            {
+                name: 'Section Two',
+                id: 2,
+                questions: [{ question: 'Are you cool?', type: 'bool' }],
+            },
+        ],
+    },
+    {
+        name: 'My Second Survey',
+        id: 2,
+        sections: [
+            {
+                name: 'Section One',
+                id: 1,
+                questions: [
+                    { question: 'What is you last name?', type: 'text' },
+                ],
+            },
+            {
+                name: 'Section Two',
+                id: 2,
+                questions: [{ question: 'Are you a terrorist?', type: 'bool' }],
+            },
+        ],
+    },
+];
 
 const typeDefs = `
-  type Query {
-    hello(name: String): String
-    user(email: String): [User!]
-  }
+	type Query {
+		hello(name: String): String
+		user(email: String): [User!]
+		survey: [Survey!]
+	}
 
-  type User {
-    email: String!
-    name: String!
-  }
+	type User {
+		email: String!
+		name: String!
+	}
 
-  type Mutation {
-    deleteUser(email: String!): Boolean!
-    createUser(email: String!, name: String!): User!
-  }
-  
+	type Survey {
+		name: String!
+		id: ID!
+		sections: [Section!]
+	}
+
+	type Section {
+		name: String!
+		id: ID!
+		questions: [Question!]
+	}
+
+	type Question {
+		question: String!
+		type: String!
+	}
+
+	type Mutation {
+		deleteUser(email: String!): Boolean!
+		createUser(email: String!, name: String!): User!
+	}
 `;
 
 const resolvers = {
-	Query: {
-		hello: (_, args) => `Hello ${args.name || 'World'}!`,
-		user: (_, { email }) => {
-			if (email) {
-				return users.find((u) => u.email === email);
-			}
-			return users;
-		},
-	},
-	Mutation: {
-		createUser(_, { email, name }) {
-			users.push({ email, name });
-			return { email, name };
-		},
-		deleteUser(_, { email }) {
-			users.filter((u) => u.email !== email);
-			return { message: 'deleted' };
-		},
-	},
+    Query: {
+        hello: (_, args) => `Hello ${args.name || 'World'}!`,
+        user: (_, { email }) => {
+            if (email) {
+                return users.find((u) => u.email === email);
+            }
+            return users;
+        },
+        survey: () => {
+            return [surveys[Math.random() < 0.5 ? 0 : 1]];
+        },
+    },
+    Mutation: {
+        createUser(_, { email, name }) {
+            users.push({ email, name });
+            return { email, name };
+        },
+        deleteUser(_, { email }) {
+            users.filter((u) => u.email !== email);
+            return { message: 'deleted' };
+        },
+    },
 };
 
 const server = new GraphQLServer({ typeDefs, resolvers });
