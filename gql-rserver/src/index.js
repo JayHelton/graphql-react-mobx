@@ -1,6 +1,9 @@
 const { GraphQLServer } = require('graphql-yoga');
 
-const users = [{ email: 'test@test.com', name: 'Test Testerson' }];
+const users = [
+    { id: 1, email: 'test@test.com', name: 'Test Testerson' },
+    { id: 2, email: 'adam@test.com', name: 'Adam Adamson' },
+];
 const surveys = [
     {
         name: 'My First Survey',
@@ -48,6 +51,7 @@ const typeDefs = `
 	}
 
 	type User {
+		id: String!
 		email: String!
 		name: String!
 	}
@@ -90,8 +94,9 @@ const resolvers = {
     },
     Mutation: {
         createUser(_, { email, name }) {
-            users.push({ email, name });
-            return { email, name };
+            const id = Math.random();
+            users.push({ id, email, name });
+            return { id, email, name };
         },
         deleteUser(_, { email }) {
             users.filter((u) => u.email !== email);
